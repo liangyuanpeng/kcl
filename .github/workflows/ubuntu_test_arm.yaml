@@ -40,7 +40,7 @@ jobs:
         run: cargo fmt --check
         shell: bash
       - name: chmod
-        shell: |
+        run: |
           chmod -R 777 kclvm
       - name: Code clippy check
         working-directory: ./kclvm
