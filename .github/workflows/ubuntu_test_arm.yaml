@@ -39,6 +39,9 @@ jobs:
         working-directory: ./kclvm
         run: cargo fmt --check
         shell: bash
+      - name: chmod
+        shell: |
+          chmod -R 777 kclvm
       - name: Code clippy check
         working-directory: ./kclvm
         run: cargo clippy --no-deps -r
