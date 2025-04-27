@@ -97,6 +97,8 @@ pub fn format_source(file: &str, src: &str, opts: &FormatOptions) -> Result<(Str
         parse_file_force_errors(file, Some(src.to_string()))?
     };
     let formatted_src = print_ast_module(&module);
+    println!("src.to_string():{}",src.to_string());
+    println!("src.to_string().done");
     println!("formatted_src:{}",formatted_src);
     println!("print format done");
     // Trim trailing whitespace, including newlines, to avoid extra blank lines

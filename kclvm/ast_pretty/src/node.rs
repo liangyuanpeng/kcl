@@ -1026,6 +1026,30 @@ impl<'p> Printer<'p> {
             println!("body1 done");
             self.stmt(stmt);
             prev_stmt = Some(stmt);
+            if(stmt.line == stmts.len()){
+                // remove_empty_last_line()
+            }
+        }
+    }
+}
+
+/// Removes the last line from String if it is empty
+pub fn remove_empty_last_line(input: &mut String) {
+    // Split the string into lines
+    let mut lines: Vec<&str> = input.lines().collect();
+    
+    // Check if the last line exists and is empty
+    if let Some(last_line) = lines.last() {
+        if last_line.trim().is_empty() {
+            // Remove the last line
+            lines.pop();
+            
+            // Rebuild the string without the last empty line
+            *input = lines.join("\n");
+            // Add back the final newline if needed
+            if !input.ends_with('\n') {
+                input.push('\n');
+            }
         }
     }
 }

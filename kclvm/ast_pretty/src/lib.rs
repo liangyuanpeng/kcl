@@ -112,9 +112,14 @@ impl<'p> Printer<'p> {
     /// Write a string with newline.
     #[inline]
     pub fn writeln(&mut self, text: &str) {
+        println!("push text and newline!!");
         self.write_string(text);
         self.write_string(NEWLINE);
         self.fill("");
+    }
+
+    pub fn remove_newline(&mut self){
+        println!("remove_newline");
     }
 
     /// Write a space.
@@ -164,9 +169,10 @@ impl<'p> Printer<'p> {
         self.writeln("")
     }
 
+
     #[inline]
     pub fn write_newline_without_fill(&mut self) {
-        // println!("new line");
+        println!("write_newline_without_fill");
         self.write_string(NEWLINE);
     }
 
