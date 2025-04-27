@@ -54,6 +54,12 @@ pub fn format<P: AsRef<Path>>(path: P, opts: &FormatOptions) -> Result<Vec<Strin
             changed_paths.push(file)
         }
     }
+    let n = changed_paths.len();
+    println!(
+        "KCL format done and {} {} formatted:",
+        n,
+        if n <= 1 { "file was" } else { "files were" }
+    );
     if opts.is_stdout {
         let n = changed_paths.len();
         println!(
@@ -71,6 +77,8 @@ pub fn format<P: AsRef<Path>>(path: P, opts: &FormatOptions) -> Result<Vec<Strin
 /// Formats a file and returns whether the file has been formatted and modified.
 pub fn format_file(file: &str, opts: &FormatOptions) -> Result<bool> {
     let src = std::fs::read_to_string(file)?;
+    println!("src:{}",src);
+    println!("src done");
     let (source, is_formatted) = format_source(file, &src, opts)?;
     if opts.is_stdout {
         println!("{}", source);
@@ -89,6 +97,10 @@ pub fn format_source(file: &str, src: &str, opts: &FormatOptions) -> Result<(Str
         parse_file_force_errors(file, Some(src.to_string()))?
     };
     let formatted_src = print_ast_module(&module);
+    println!("formatted_src:{}",formatted_src);
+    println!("print format done");
+    // Trim trailing whitespace, including newlines, to avoid extra blank lines
+    // let formatted_src = formatted_src.trim_end().to_string();
     let is_formatted = src != formatted_src;
     Ok((formatted_src, is_formatted))
 }

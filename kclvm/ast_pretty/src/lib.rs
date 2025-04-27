@@ -166,6 +166,7 @@ impl<'p> Printer<'p> {
 
     #[inline]
     pub fn write_newline_without_fill(&mut self) {
+        // println!("new line");
         self.write_string(NEWLINE);
     }
 
@@ -196,6 +197,7 @@ impl<'p> Printer<'p> {
     pub fn write_module(&mut self, module: &ast::Module) {
         self.walk_module(module);
         while let Some(comment) = self.comments.pop_front() {
+            println!("h");
             self.writeln(&comment.node.text);
             self.fill("");
         }
@@ -230,6 +232,7 @@ impl<'p> Printer<'p> {
             return;
         }
         if node.line > self.last_ast_line {
+            println!("> last ast line??{}|{}",node.line,self.last_ast_line);
             self.last_ast_line = node.line;
             let mut index = None;
             for (i, comment) in self.comments.iter().enumerate() {
@@ -248,6 +251,7 @@ impl<'p> Printer<'p> {
                             match self.comments.front() {
                                 Some(next_comment) => {
                                     if next_comment.line >= comment.line + 2 && count > 0 {
+                                        println!("write newline???");
                                         self.write_newline();
                                     }
                                 }

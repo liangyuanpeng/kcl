@@ -58,20 +58,31 @@ fn test_format_source() {
     }
 }
 
+// cargo test --package kclvm-tools --lib -- format::tests::test_format_single_file --exact --show-output 
 #[test]
 fn test_format_single_file() {
+    let opts = FormatOptions {
+        is_stdout: true,
+        recursively: false,
+        omit_errors: false,
+    };
     assert!(format(
         "./src/format/test_data/format_path_data/single_file.k",
-        &FormatOptions::default()
+        &opts
     )
     .is_ok());
 }
 
 #[test]
 fn test_format_folder() {
+    let opts = FormatOptions {
+        is_stdout: true,
+        recursively: false,
+        omit_errors: false,
+    };
     assert!(format(
         "./src/format/test_data/format_path_data/folder",
-        &FormatOptions::default()
+        &opts
     )
     .is_ok());
 }

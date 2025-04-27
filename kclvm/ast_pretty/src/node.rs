@@ -33,11 +33,13 @@ impl<'p, 'ctx> MutSelfTypedResultWalker<'ctx> for Printer<'p> {
     type Result = ();
 
     fn walk_module(&mut self, module: &'ctx ast::Module) -> Self::Result {
+        println!("walk_module");
         for comment in &module.comments {
             self.comments.push_back(comment.clone());
         }
         if let Some(doc) = &module.doc {
             self.write(&doc.node);
+            println!("write two newline");
             self.write_newline();
             self.write_newline();
         }
@@ -970,9 +972,14 @@ impl<'p> Printer<'p> {
 
     pub fn stmt(&mut self, stmt: &ast::NodeRef<ast::Stmt>) {
         self.hook.pre(self, super::ASTNode::Stmt(stmt));
-        self.fill("");
+        // println!("fill newline!!");
+        // self.fill("");
+        println!("body:{}",self.out);
+        println!("body done");
         self.write_comments_before_node(stmt);
         self.walk_stmt(&stmt.node);
+        println!("body2:{}",self.out);
+        println!("body2 done");
         self.hook.post(self, super::ASTNode::Stmt(stmt));
     }
 
@@ -982,21 +989,26 @@ impl<'p> Printer<'p> {
         }
     }
 
+    //lan 格式化
     pub fn stmts(&mut self, stmts: &[ast::NodeRef<ast::Stmt>]) {
         // Hold the prev statement pointer.
         let mut prev_stmt: Option<&ast::NodeRef<ast::Stmt>> = None;
+        
         for stmt in stmts {
             let import_stmt_alter = match (prev_stmt.map(|s| &s.node).as_ref(), &stmt.node) {
                 (Some(ast::Stmt::Import(_)), ast::Stmt::Import(_)) => false,
                 (Some(ast::Stmt::Import(_)), _) => true,
                 _ => false,
             };
+            println!("stmts.len():{}|{}",stmt.line,stmts.len());
             // Do not format out user-reserved blank lines: which does not mean that to preserve all user-written blank lines.
             // For situations where there are more than two blank lines, we only keep one blank line.
             let need_newline = if let Some(prev_stmt) = prev_stmt {
+                println!("stmt.line:{}|{}",stmt.line,prev_stmt.end_line);
                 if stmt.line > prev_stmt.end_line + 2 {
                     true
                 } else if stmt.line == prev_stmt.end_line + 2 {
+                    println!("stmt.line == prev_stmt.end_line + 2");
                     stmt.line > 0 && !self.has_comments_on_node(stmt)
                 } else {
                     false
@@ -1004,9 +1016,14 @@ impl<'p> Printer<'p> {
             } else {
                 false
             };
+            println!("need_newline:{}",need_newline);
             if import_stmt_alter || need_newline {
+                println!("write newline");
                 self.write_newline_without_fill();
             }
+            // println!("oki");
+            println!("body1:{}",self.out);
+            println!("body1 done");
             self.stmt(stmt);
             prev_stmt = Some(stmt);
         }
