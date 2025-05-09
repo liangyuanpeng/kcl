@@ -6,5 +6,4 @@ schema Person:
 
 x0 = Person {}
 
-x1 = Person {age = 101}
-
+x1 = Person {age = 101}2
