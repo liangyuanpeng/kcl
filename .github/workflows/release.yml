@@ -47,7 +47,7 @@ jobs:
         shell: bash
       - name: print 
         run: |
-          echo kclvm/
+          tree kclvm/
       - name: Evaluator Grammar test
         working-directory: ./kclvm
         run: export PATH=$PATH:$PWD/../_build/dist/linux/kclvm/bin && make test-grammar-evaluator
